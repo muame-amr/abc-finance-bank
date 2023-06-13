@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-    Page<Account> findByBankId(Long bankId, Pageable pageable);
-    Optional<Account> findByIdAndBankId(Long id, Long bankId);
+    Page<Account> findByBankBranchCode(int branchCode, Pageable pageable);
+    Optional<Account> findByIdAndBankBranchCode(Long id, int branchCode);
 }

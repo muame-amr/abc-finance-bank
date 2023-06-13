@@ -11,7 +11,10 @@ import java.util.Optional;
 public interface BankService {
     Page<Bank> getAllBanks(Pageable pageable);
     Optional<Bank> getBankById(Long id);
+    Optional<Bank> getBankByBranchCode(int branchCode);
     Bank addBank(Bank bank);
     Bank updateBank(Bank bank);
     void deleteBank(Long id);
+    boolean existsById(Long bankId);
+    boolean existsByBranchCode(int branchCode);
 }

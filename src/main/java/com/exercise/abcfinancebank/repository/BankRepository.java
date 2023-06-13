@@ -8,4 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface BankRepository extends JpaRepository<Bank, Long> {
+    public Optional<Bank> findByBranchCode(int branchCode);
+
+    public Boolean existsByBranchCode(int branchCode);
 }

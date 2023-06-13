@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -28,6 +27,11 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
+    public Optional<Bank> getBankByBranchCode(int branchCode) {
+        return bankDAO.getBankByBranchCode(branchCode);
+    }
+
+    @Override
     public Bank addBank(Bank bank) {
         return bankDAO.addBank(bank);
     }
@@ -40,5 +44,15 @@ public class BankServiceImpl implements BankService {
     @Override
     public void deleteBank(Long id) {
         bankDAO.deleteBank(id);
+    }
+
+    @Override
+    public boolean existsById(Long bankId) {
+        return bankDAO.existsById(bankId);
+    }
+
+    @Override
+    public boolean existsByBranchCode(int branchCode) {
+        return bankDAO.existsByBranchCode(branchCode);
     }
 }

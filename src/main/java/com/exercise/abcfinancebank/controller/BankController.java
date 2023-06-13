@@ -19,7 +19,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/banks")
 public class BankController {
-
     private final BankService bankService;
     private final BankMapper mapper = BankMapper.INSTANCE;
 
@@ -30,17 +29,21 @@ public class BankController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getBankById(@PathVariable Long id) {
-        log.info("[getBankById] Fetching Bank with Id: " + id);
+    public ResponseEntity<?> getBankById(@PathVariable("id") Long id) {
+        log.info("[getBankById] Fetching Bank with Id=" + id);
         return ResponseEntity.ok(bankService.getBankById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getBankByBranchCode(@RequestParam("brnchCd") int branchCode) {
+        log.info("[getBankByBranchCode] Fetching Bank with BranchCode=" + branchCode);
+        return ResponseEntity.ok(bankService.getBankByBranchCode(branchCode));
     }
 
     @PostMapping("/")
     public ResponseEntity<?> createBank(@Valid @RequestBody BankDTO bankRequest) throws Exception {
-        log.info("[createBank] Added New Bank: " + bankRequest.getName());
-        Bank bank = new Bank();
-        bank.setName(bankRequest.getName());
-        bank.setBranchCode(bankRequest.getBranchCode());
+        log.info("[createBank] Added New Bank=" + bankRequest.getName());
+        Bank bank = mapper.bankDTOToBank(bankRequest);
         try {
             Bank res = bankService.addBank(bank);
             BankDTO bankResponse = mapper.bankToBankDTO(res);
@@ -51,18 +54,19 @@ public class BankController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBank(@PathVariable Long id, @Valid @RequestBody BankDTO
+    public ResponseEntity<?> updateBank(@PathVariable("id") Long id, @Valid @RequestBody BankDTO
             bankRequest) {
+        log.info("[updateBank] Update bank with bankId=" + id + " ...");
         return bankService.getBankById(id).map(bank -> {
-            bank.setName(bankRequest.getName());
-            bank.setBranchCode(bankRequest.getBranchCode());
+            mapper.updateBankFromDTO(bankRequest, bank);
             return ResponseEntity.ok(mapper.bankToBankDTO(bankService.updateBank(bank)));
         }).orElseThrow(() -> new ResourceNotFoundException("[UpdateBank] BankId: " +
                 id + " not found"));
     }
 
-    @DeleteMapping("/{bankId}")
-    public ResponseEntity<?> deleteBank(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBank(@PathVariable("id") Long id) {
+        log.info("[deleteBank] Delete bank with bankId=" + id + " ...");
         return bankService.getBankById(id).map(bank -> {
             bankService.deleteBank(bank.getId());
             return ResponseEntity.noContent().build();
