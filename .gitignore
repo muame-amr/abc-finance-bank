@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+.fastRequest/collections/Root/Default Group/directory.json
+.fastRequest/collections/Root/directory.json
+.fastRequest/config/fastRequestCurrentProjectConfig.json
