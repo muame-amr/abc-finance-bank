@@ -2,10 +2,8 @@ package com.exercise.abcfinancebank.mapstruct;
 
 import com.exercise.abcfinancebank.dto.AccountDTO;
 import com.exercise.abcfinancebank.model.Account;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
